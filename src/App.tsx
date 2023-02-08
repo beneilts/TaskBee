@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { NhostClient, NhostProvider } from '@nhost/react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+
+import Layout from './components/Layout';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+
+const nhost = new NhostClient({
+    subdomain: process.env.REACT_APP_NHOST_SUBDOMAIN,
+    region: process.env.REACT_APP_NHOST_REGION
+})
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <NhostProvider nhost={nhost}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="sign-up" element={<SignUp />} />
+                    <Route path="sign-in" element={<SignIn />} />
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="profile" element={<Profile />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+
+            <Toaster />
+        </NhostProvider>
+    );
 }
 
 export default App;
