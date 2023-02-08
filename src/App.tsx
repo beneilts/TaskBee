@@ -2,8 +2,10 @@ import './App.css';
 import { NhostClient, NhostProvider } from '@nhost/react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { NhostApolloProvider } from '@nhost/react-apollo'
 
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute'
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
@@ -17,18 +19,20 @@ const nhost = new NhostClient({
 function App() {
     return (
         <NhostProvider nhost={nhost}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="sign-up" element={<SignUp />} />
-                    <Route path="sign-in" element={<SignIn />} />
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<Dashboard />} />
-                        <Route path="profile" element={<Profile />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <NhostApolloProvider nhost={nhost}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="sign-up" element={<SignUp />} />
+                        <Route path="sign-in" element={<SignIn />} />
+                        <Route path="/" element={<ProtectedRoute> <Layout /> </ProtectedRoute>}>
+                            <Route index element={<Dashboard />} />
+                            <Route path="profile" element={<Profile />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
 
-            <Toaster />
+                <Toaster />
+            </NhostApolloProvider>
         </NhostProvider>
     );
 }
