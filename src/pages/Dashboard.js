@@ -4,9 +4,25 @@ import { useOutletContext } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { toast } from 'react-hot-toast'
+import { gql, useMutation } from '@apollo/client'
+
+
+
+// Mutation for creating a board
+// NOTE: Nhost does not allow the use of 'insert_boards_one' or the use of 'returning' in the mutation response.
+const CREATE_BOARD = gql`
+  mutation ($private: Boolean, $background_value: String, $description: String, $name: String, $created_by: uuid, $background_is_image: Boolean) {
+    insert_boards(objects: {private: $private, background_value: $background_value, description: $description, name: $name, created_by: $created_by, background_is_image: $background_is_image, members: {data: [{user_id: $created_by}]}}) {
+        affected_rows
+    }
+  }
+`
 
 const Dashboard = () => {
     const { user } = useOutletContext();
+    const [mutateBoard, { loading }] = useMutation(CREATE_BOARD)
+    
     const formik = useFormik({
         initialValues: {
             background: '#000000',
@@ -21,8 +37,28 @@ const Dashboard = () => {
         }),
 
         // Submit form
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
+            values.private = (values.private.length > 0)
             console.log(values)
+            try {
+                await mutateBoard({
+                    variables: {
+                        name: values.name,
+                        description: values.description,
+                        created_by: user.id,
+                        //user_id: user.id,
+                        private: values.private,
+                        background_is_image: false,
+                        background_value: values.background
+                    },
+
+                    onError: (apolloError) => {console.log(apolloError)}
+                })
+                toast.success('Board created', { id: 'createBoard' })
+            } catch (error) {
+                toast.error('Unable to create board', { id: 'createBoard' })
+            }
+            
         }
     })
 
@@ -50,16 +86,16 @@ const Dashboard = () => {
                                     />
                                 </div>
                                 <div className='pb-4'>
-                                    <label 
-                                        className={`block font-mono font-bold pb-2 ${formik.touched.name && formik.errors.name ? 'text-red-400' : ''}`} 
+                                    <label
+                                        className={`block font-mono font-bold pb-2 ${formik.touched.name && formik.errors.name ? 'text-red-400' : ''}`}
                                         htmlFor='name'
                                     >
                                         {formik.touched.name && formik.errors.name ? formik.errors.name : "Board name"}
                                     </label>
-                                    <input 
-                                        className='border-2 border-gray-500 p-2 rounded-md' 
-                                        type='text' 
-                                        name='name' 
+                                    <input
+                                        className='border-2 border-gray-500 p-2 rounded-md'
+                                        type='text'
+                                        name='name'
                                         placeholder='Enter a name'
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
@@ -68,10 +104,10 @@ const Dashboard = () => {
                                 </div>
                                 <div className='pb-4'>
                                     <label className='block font-mono font-bold pb-2' htmlFor='description'>Description</label>
-                                    <input 
-                                        className='border-2 border-gray-500 p-2 rounded-md' 
-                                        type='text' 
-                                        name='description' 
+                                    <input
+                                        className='border-2 border-gray-500 p-2 rounded-md'
+                                        type='text'
+                                        name='description'
                                         placeholder='Enter a description'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
