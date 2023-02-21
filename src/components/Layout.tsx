@@ -55,13 +55,13 @@ const Layout = () => {
             <header className={styles.header}>
                 <div className={styles['header-container']}>
                     <Link to="/">
-                        <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
+                        {/*<img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" /> */}
+                        <p className='text-white font-bold text-2xl'>TaskBee</p>
                     </Link>
 
                     <Menu as="div" className={styles.menu}>
                         <Menu.Button className={styles['menu-button']}>
                             <Avatar src={user?.avatarUrl} alt={user?.displayName} />
-                            <ChevronDownIcon />
                         </Menu.Button>
                         <Transition
                             as={Fragment}

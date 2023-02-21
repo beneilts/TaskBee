@@ -27,7 +27,7 @@ const SignIn = () => {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles['logo-wrapper']}>
-          <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
+            <p className='text-[#FFA500] font-bold text-2xl'>TaskBee</p>
         </div>
 
         {needsEmailVerification ? (

@@ -4,6 +4,8 @@
   overflow: hidden;
   width: 2.25rem;
   height: 2.25rem;
+  display: flex;
+  justify-content: center;
 }
 
 .avatar > img {

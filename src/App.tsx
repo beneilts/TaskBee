@@ -11,6 +11,10 @@ import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
+// Main color: #FFA500 (orange)
+// Complementary color: #2F4F4F (dark slate gray)
+// Accent color: #FFFFFF (white)
+
 const nhost = new NhostClient({
     subdomain: process.env.REACT_APP_NHOST_SUBDOMAIN,
     region: process.env.REACT_APP_NHOST_REGION

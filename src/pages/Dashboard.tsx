@@ -69,7 +69,7 @@ const Dashboard = () => {
     return (
         <>
             <Helmet>
-                <title>Dashboard - Nhost</title>
+                <title>Dashboard - TaskBee</title>
             </Helmet>
 
             <div>
