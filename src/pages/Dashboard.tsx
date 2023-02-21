@@ -1,12 +1,11 @@
 import styles from '../styles/pages/Dashboard.module.css';
 
 import { useOutletContext } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast'
 import { gql, useMutation } from '@apollo/client'
-
 
 
 // Mutation for creating a board
@@ -20,7 +19,7 @@ const CREATE_BOARD = gql`
 `
 
 const Dashboard = () => {
-    const { user } = useOutletContext();
+    const { user }: any = useOutletContext();
     const [mutateBoard, { loading }] = useMutation(CREATE_BOARD)
     
     const formik = useFormik({
@@ -37,7 +36,7 @@ const Dashboard = () => {
         }),
 
         // Submit form
-        onSubmit: async (values) => {
+        onSubmit: async (values: any) => {
             values.private = (values.private.length > 0)
             console.log(values)
             try {
@@ -52,13 +51,18 @@ const Dashboard = () => {
                         background_value: values.background
                     },
 
-                    onError: (apolloError) => {console.log(apolloError)}
+                    onCompleted: () => {
+                        toast.success('Board created', { id: 'createBoard' })
+                    },
+                    onError: (apolloError) => {
+                        toast.error('Unable to create board', { id: 'createBoard' })
+                        console.log(apolloError)
+                    }
                 })
-                toast.success('Board created', { id: 'createBoard' })
+                
             } catch (error) {
                 toast.error('Unable to create board', { id: 'createBoard' })
             }
-            
         }
     })
 

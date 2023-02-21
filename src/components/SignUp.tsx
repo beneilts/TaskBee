@@ -14,7 +14,7 @@ const SignUp = () => {
     const { signUpEmailPassword, isLoading, isSuccess, needsEmailVerification, isError, error } =
         useSignUpEmailPassword()
 
-    const handleOnSubmit = (e) => {
+    const handleOnSubmit = (e:any) => {
         e.preventDefault()
 
         signUpEmailPassword(email, password, {
@@ -49,14 +49,14 @@ const SignUp = () => {
                             <Input
                                 label="First name"
                                 value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                onChange={(e:any) => setFirstName(e.target.value)}
                                 disabled={disableForm}
                                 required
                             />
                             <Input
                                 label="Last name"
                                 value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
+                                onChange={(e:any) => setLastName(e.target.value)}
                                 disabled={disableForm}
                                 required
                             />
@@ -65,7 +65,7 @@ const SignUp = () => {
                             type="email"
                             label="Email address"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e:any) => setEmail(e.target.value)}
                             disabled={disableForm}
                             required
                         />
@@ -73,7 +73,7 @@ const SignUp = () => {
                             type="password"
                             label="Create password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e:any) => setPassword(e.target.value)}
                             disabled={disableForm}
                             required
                         />

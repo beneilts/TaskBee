@@ -12,7 +12,7 @@ const SignIn = () => {
   const { signInEmailPassword, isLoading, isSuccess, needsEmailVerification, isError, error } =
     useSignInEmailPassword()
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = (e:any) => {
     e.preventDefault()
     signInEmailPassword(email, password)
   }
@@ -40,7 +40,7 @@ const SignIn = () => {
               type="email"
               label="Email address"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e:any) => setEmail(e.target.value)}
               disabled={disableForm}
               required
             />
@@ -48,7 +48,7 @@ const SignIn = () => {
               type="password"
               label="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e:any) => setPassword(e.target.value)}
               disabled={disableForm}
               required
             />

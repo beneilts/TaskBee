@@ -18,7 +18,7 @@ const UPDATE_USER_MUTATION = gql`
 `
 
 const Profile = () => {
-    const { user } = useOutletContext();
+    const { user } : any = useOutletContext();
     const [mutateUser, { loading: updatingProfile }] = useMutation(UPDATE_USER_MUTATION)
     const [firstName, setFirstName] = useState(user?.metadata?.firstName ?? '');
     const [lastName, setLastName] = useState(user?.metadata?.lastName ?? '');
@@ -27,7 +27,7 @@ const Profile = () => {
     const isLastNameDirty = lastName !== user?.metadata?.lastName;
     const isProfileFormDirty = isFirstNameDirty || isLastNameDirty;
 
-    const updateUserProfile = async e => {
+    const updateUserProfile = async (e : any) => {
         e.preventDefault();
 
         try {
@@ -67,14 +67,14 @@ const Profile = () => {
                                     type="text"
                                     label="First name"
                                     value={firstName}
-                                    onChange={e => setFirstName(e.target.value)}
+                                    onChange={(e : any) => setFirstName(e.target.value)}
                                     required
                                 />
                                 <Input
                                     type="text"
                                     label="Last name"
                                     value={lastName}
-                                    onChange={e => setLastName(e.target.value)}
+                                    onChange={(e : any) => setLastName(e.target.value)}
                                     required
                                 />
                             </div>
