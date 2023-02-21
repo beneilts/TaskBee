@@ -10,7 +10,10 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import PageNotFound from './pages/PageNotFound';
+import Board from './pages/Board';
 
+// SNIPPET => rafce
 // Main color: #FFA500 (orange)
 // Complementary color: #2F4F4F (dark slate gray)
 // Accent color: #FFFFFF (white)
@@ -31,6 +34,8 @@ function App() {
                         <Route path="/" element={<ProtectedRoute> <Layout /> </ProtectedRoute>}>
                             <Route index element={<Dashboard />} />
                             <Route path="profile" element={<Profile />} />
+                            <Route path="boards/:boardId" element={<Board />} />
+                            <Route path="*" element={<PageNotFound />} />
                         </Route>
                     </Routes>
                 </BrowserRouter>
