@@ -51,7 +51,7 @@ const Layout = () => {
     ];
 
     return (
-        <div>
+        <div className='flex flex-col h-screen'>
             <header className={styles.header}>
                 <div className={styles['header-container']}>
                     <Link to="/">
@@ -107,7 +107,7 @@ const Layout = () => {
             </header>
 
             <main className={styles.main}>
-                <div className={styles['main-container']}>
+                <div className="h-full">
                     {error ? (
                         <p>Something went wrong. Try to refresh the page.</p>
                     ) : !loading ? (

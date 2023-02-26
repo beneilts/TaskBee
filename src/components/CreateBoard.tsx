@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast'
 import { gql, useMutation } from '@apollo/client'
+import { background_colors } from '../resources/background_colors';
 
 // Mutation for creating a board
 // NOTE: Nhost does not allow the use of 'insert_boards_one' or the use of 'returning' in the mutation response.

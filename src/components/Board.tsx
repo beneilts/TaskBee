@@ -1,14 +1,16 @@
+import {StarIcon} from '@heroicons/react/outline';
+import {StarIcon as StarIconSolid} from '@heroicons/react/solid';
+import { Link } from 'react-router-dom';
 
 const Board = ({ data }: { data: any }) => {
-    console.log(data.name)
-    //${data.background_value}
     return (
-        <div className={`text-black p-4 font-bold w-72 h-40 border-2 border-black rounded-md ${!data.background_is_image ? `bg-[#3d96aa]` : ''}`} >
+        <Link to={`/boards/${data.id}`} style={{backgroundColor: (!data.background_is_image ? data.background_value : null)}} className={`text-white p-4 font-bold w-72 h-40 rounded-md relative`} >
             {/* <img src="image1.jpg" alt="Image 1" className="w-full"> */}
-            <div >
-                <h2>{data.name}</h2>
-            </div>
-        </div>
+            <h2>{data.name}</h2>
+            <button className='w-5 absolute bottom-2 right-2'>
+                {data.members[0].starred ? <StarIconSolid /> : <StarIcon />}
+            </button>
+        </Link>
     )
 }
 

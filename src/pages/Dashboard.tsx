@@ -6,12 +6,7 @@ import Board from '../components/Board';
 // Query for getting a user's boards
 const GET_BOARDS_QUERY = gql`
   query GetBoardsByUser($userId: uuid) {
-  boards(where: {
-    _or: [
-      {created_by: {_eq: $userId}},
-      {members: {user_id: {_eq: $userId}}}
-    ]
-  }) {
+  boards(where: {members: {user_id: {_eq: $userId}}}) {
     members(where: {user_id: {_eq: $userId}}) {
       visited_at
       starred
@@ -32,25 +27,39 @@ const Dashboard = () => {
     const { loading, error, data } = useQuery(GET_BOARDS_QUERY, {
         variables: { userId: user.id }
     })
+    let boards
+
+    // sort boards by visited_at date
+    if (!loading) {
+        boards = data?.boards.slice()
+        boards.sort((a:any, b:any) => {
+            let dateA = new Date(a.members[0].visited_at)
+            let dateB = new Date(b.members[0].visited_at)
+            return dateA.getTime() - dateB.getTime()
+        })
+    }
 
     return (
-        <>
+        <div className='flex justify-center'>
             <Helmet>
                 <title>Dashboard - TaskBee</title>
             </Helmet>
 
-            <div>
+            <div className='w-2/3 pt-10'>
                 <h1 className='text-black text-2xl pb-4'>Boards</h1>
 
                 {error ? 
                     <p>Could not load boards. Try to refresh the page.</p>
                 : !loading ? 
                     <div className='grid grid-cols-4 gap-5 overflow-y-auto h-96'> 
-                        {data?.boards.map((board: any) => <Board key={board.id} data={board}/>)}
+                        <button className={`text-black p-4 w-72 h-40 border-2 rounded-md bg-gray-200`} >
+                            <h2>Create a new board</h2>
+                        </button>
+                        {boards.map((board: any) => <Board key={board.id} data={board}/>)}
                     </div>
                 : null}
             </div>
-        </>
+        </div>
     );
 };
 

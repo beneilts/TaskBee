@@ -187,6 +187,7 @@
 
 .main {
   margin-top: 60px;
+  flex: 1 1 0%;
 }
 
 .main-container {
