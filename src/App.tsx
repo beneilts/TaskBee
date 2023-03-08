@@ -3,6 +3,7 @@ import { NhostClient, NhostProvider } from '@nhost/react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { NhostApolloProvider } from '@nhost/react-apollo'
+import { RecoilRoot } from 'recoil'
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute'
@@ -27,20 +28,22 @@ function App() {
     return (
         <NhostProvider nhost={nhost}>
             <NhostApolloProvider nhost={nhost}>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="sign-up" element={<SignUp />} />
-                        <Route path="sign-in" element={<SignIn />} />
-                        <Route path="/" element={<ProtectedRoute> <Layout /> </ProtectedRoute>}>
-                            <Route index element={<Dashboard />} />
-                            <Route path="profile" element={<Profile />} />
-                            <Route path="boards/:boardId" element={<Board />} />
-                            <Route path="*" element={<PageNotFound />} />
-                        </Route>
-                    </Routes>
-                </BrowserRouter>
+                <RecoilRoot>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="sign-up" element={<SignUp />} />
+                            <Route path="sign-in" element={<SignIn />} />
+                            <Route path="/" element={<ProtectedRoute> <Layout /> </ProtectedRoute>}>
+                                <Route index element={<Dashboard />} />
+                                <Route path="profile" element={<Profile />} />
+                                <Route path="boards/:boardId" element={<Board />} />
+                                <Route path="*" element={<PageNotFound />} />
+                            </Route>
+                        </Routes>
+                    </BrowserRouter>
 
-                <Toaster />
+                    <Toaster />
+                </RecoilRoot>
             </NhostApolloProvider>
         </NhostProvider>
     );

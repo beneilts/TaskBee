@@ -1,7 +1,10 @@
 import { useOutletContext } from 'react-router-dom';
 import { Helmet } from 'react-helmet'
 import { gql, useQuery } from '@apollo/client'
+import { useState } from 'react';
+
 import Board from '../components/Board';
+import CreateBoard from '../components/CreateBoard';
 
 // Query for getting a user's boards
 const GET_BOARDS_QUERY = gql`
@@ -25,9 +28,11 @@ const GET_BOARDS_QUERY = gql`
 const Dashboard = () => {
     const { user }: any = useOutletContext();
     const { loading, error, data } = useQuery(GET_BOARDS_QUERY, {
-        variables: { userId: user.id }
+        variables: { userId: user.id },
     })
+    let [showModal, setShowModal] = useState(false)
     let boards
+    
 
     // sort boards by visited_at date
     if (!loading) {
@@ -37,6 +42,10 @@ const Dashboard = () => {
             let dateB = new Date(b.members[0].visited_at)
             return dateA.getTime() - dateB.getTime()
         })
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false)
     }
 
     return (
@@ -52,11 +61,16 @@ const Dashboard = () => {
                     <p>Could not load boards. Try to refresh the page.</p>
                 : !loading ? 
                     <div className='grid grid-cols-4 gap-5 overflow-y-auto h-96'> 
-                        <button className={`text-black p-4 w-72 h-40 border-2 rounded-md bg-gray-200`} >
+                        <button className={`text-black p-4 w-72 h-40 rounded-md bg-zinc-100 hover:bg-zinc-200`} 
+                        onClick = {() => setShowModal(true)}>
                             <h2>Create a new board</h2>
                         </button>
                         {boards.map((board: any) => <Board key={board.id} data={board}/>)}
                     </div>
+                : null}
+
+                {showModal ? 
+                    <CreateBoard closeClicked={handleCloseModal}/>
                 : null}
             </div>
         </div>

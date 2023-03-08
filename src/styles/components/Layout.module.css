@@ -27,7 +27,7 @@
   top: 0px;
   left: 0px;
   right: 0px;
-  height: 60px;
+  height: 50px;
   background-color: #FFA500;
   box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0 0 0 / 0.1),
     0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -35,13 +35,13 @@
 }
 
 .header-container {
-  composes: container;
+  /* composes: container; */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
 }
@@ -186,7 +186,7 @@
 }
 
 .main {
-  margin-top: 60px;
+  margin-top: 50px;
   flex: 1 1 0%;
 }
 
