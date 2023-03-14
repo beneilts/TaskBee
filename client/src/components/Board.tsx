@@ -1,5 +1,5 @@
-import {StarIcon} from '@heroicons/react/outline';
-import {StarIcon as StarIconSolid} from '@heroicons/react/solid';
+import {StarIcon} from '@heroicons/react/24/outline';
+import {StarIcon as StarIconSolid} from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
 
 const Board = ({ data }: { data: any }) => {

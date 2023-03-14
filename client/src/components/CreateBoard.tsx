@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-hot-toast'
 import { gql, useMutation } from '@apollo/client'
 import { background_colors } from '../resources/background_colors';
-import { XIcon, CheckIcon } from '@heroicons/react/solid';
+import { XMarkIcon, CheckIcon } from '@heroicons/react/24/solid';
 
 // Mutation for creating a board
 // NOTE: Nhost does not allow the use of 'insert_boards_one' or the use of 'returning' in the mutation response.
@@ -73,7 +73,7 @@ const CreateBoard = ({closeClicked} : {closeClicked:() => void}) => {
                 <div className="fixed inset-0 bg-gray-500 opacity-40"></div>
                 
                 <div className='bg-white mt-10 w-80 rounded-md overflow-hidden shadow-xl transform transition-all'>
-                    <button onClick={closeClicked} className='w-6 absolute top-0 right-0 mt-1 mr-1'><XIcon /></button>
+                    <button onClick={closeClicked} className='w-6 absolute top-0 right-0 mt-1 mr-1'><XMarkIcon /></button>
                     <h2 className="text-lg text-center mt-2">Create a board</h2>
                     
                     <form onSubmit={formik.handleSubmit} className='flex flex-col p-5'>

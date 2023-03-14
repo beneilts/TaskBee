@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom"
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { useState } from "react"
-import {StarIcon} from '@heroicons/react/outline';
-import {StarIcon as StarIconSolid, PlusIcon, XIcon} from '@heroicons/react/solid';
+import {StarIcon} from '@heroicons/react/24/outline';
+import {StarIcon as StarIconSolid, PlusIcon, XMarkIcon} from '@heroicons/react/24/solid';
+
 import { useOutletContext } from 'react-router-dom';
 import List from "../components/List";
 
@@ -106,7 +107,7 @@ const Board = () => {
                                 ></input>
                                 <div className="flex">
                                     <button className="bg-orange-500 px-3 py-1 rounded-sm hover:bg-orange-600" onClick={createList}>Add list</button>
-                                    <button><XIcon className="w-6 ml-2 text-gray-600 hover:text-gray-400"
+                                    <button><XMarkIcon className="w-6 ml-2 text-gray-600 hover:text-gray-400"
                                         onClick={() => setNewList({showInput: false, name: ""})}
                                     /></button>
                                 </div>

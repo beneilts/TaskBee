@@ -7,9 +7,9 @@ import { Menu, Transition } from '@headlessui/react';
 import {
     ChevronDownIcon,
     HomeIcon,
-    LogoutIcon,
+    ArrowLeftOnRectangleIcon,
     UserIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import Avatar from './Avatar';
 
 const GET_USER_QUERY = gql`
@@ -46,7 +46,7 @@ const Layout = () => {
         {
             label: 'Logout',
             onClick: () => signOut(),
-            icon: LogoutIcon,
+            icon: ArrowLeftOnRectangleIcon,
         },
     ];
 

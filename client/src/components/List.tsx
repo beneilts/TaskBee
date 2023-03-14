@@ -1,5 +1,5 @@
 import Card from "./Card"
-import { PlusIcon } from "@heroicons/react/solid"
+import { PlusIcon } from "@heroicons/react/24/solid"
 
 const List = () => {
     return (

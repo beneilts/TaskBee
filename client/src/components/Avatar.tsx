@@ -1,7 +1,7 @@
 import styles from '../styles/components/Avatar.module.css';
 import {
     UserIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 const defaultUrl = "https://s.gravatar.com/avatar/1d7853465e033165688e1bcb3abc018e?r=g&default=blank"
 
