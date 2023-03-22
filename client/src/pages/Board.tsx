@@ -1,22 +1,40 @@
 import { useParams } from "react-router-dom"
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { useState } from "react"
+import { toast } from 'react-hot-toast'
 import {StarIcon} from '@heroicons/react/24/outline';
 import {StarIcon as StarIconSolid, PlusIcon, XMarkIcon} from '@heroicons/react/24/solid';
 
 import { useOutletContext } from 'react-router-dom';
 import List from "../components/List";
 
-// Query for getting a board by boardId
-const GET_BOARDS_QUERY = gql`
-  query GetBoardsByUser($boardId: Int) {
-  boards(where: {id: {_eq: $boardId}}) {
-    members(where: {board_id: {_eq: $boardId}}) {
+// Query for getting a board by board_id
+const GET_BOARDS = gql`
+  query GetBoards($board_id: Int) {
+  boards(where: {id: {_eq: $board_id}}) {
+    members(where: {board_id: {_eq: $board_id}}) {
       user {
         displayName
       }
       visited_at
       starred
+    }
+    lists(where: {board_id: {_eq: $board_id}}, order_by: {position: asc_nulls_last}) {
+        created_at
+        id
+        name
+        position
+        updated_at
+    }
+    cards(where: {board_id: {_eq: $board_id}}, order_by: {position: asc_nulls_last}) {
+        created_at
+        created_by
+        description
+        name
+        position
+        updated_at
+        id
+        list_id
     }
     name
     private
@@ -29,53 +47,59 @@ const GET_BOARDS_QUERY = gql`
 `
 
 // Mutation for creating a new list
+const CREATE_LIST = gql`
+    mutation CreateList($board_id: Int, $name: String) {
+        insert_lists_one(object: {board_id: $board_id, name: $name}) {
+            id
+        }
+    }
+`
 
 const Board = () => {
     const { user }: any = useOutletContext();
     const [notFound, setNotFound] = useState(false)
     const [boardData, setBoardData] = useState<any>(undefined)
     const [newList, setNewList] = useState({showInput: false, name: ""})
+    const [mutateList, ] = useMutation(CREATE_LIST)
     const { boardId } = useParams()
     
-    const { loading, error, data } = useQuery(GET_BOARDS_QUERY, {
-        variables: { boardId: boardId },
+    const { loading, error, data } = useQuery(GET_BOARDS, {
+        variables: { board_id: boardId },
         onCompleted: (data) => {
-            if (data.boards[0]) 
-                setBoardData(data.boards[0])
+            if (data.boards[0])
+                setBoardData(data.boards[0]); 
             else
                 setNotFound(true)
             
+        },
+        onError: (apolloError) => {
+            console.log(apolloError)
         }
     })
 
-    const createList = () => {
+    const createList = async () => {
         if (newList.name === "") return
         console.log("Creating list "+newList.name)
 
-        // try {
-        //     await mutateBoard({
-        //         variables: {
-        //             name: values.name,
-        //             description: values.description,
-        //             created_by: user.id,
-        //             private: values.private,
-        //             background_is_image: false,
-        //             background_value: values.background
-        //         },
+        try {
+            await mutateList({
+                variables: {
+                    name: newList.name,
+                    board_id: boardId
+                },
 
-        //         onCompleted: (data) => {
-        //             //toast.success('Board created', { id: 'createBoard' })
-        //             navigate(`/boards/${data.insert_boards_one.id}`)
-        //         },
-        //         onError: (apolloError) => {
-        //             toast.error('Unable to create board', { id: 'createBoard' })
-        //             console.log(apolloError)
-        //         }
-        //     })
+                onCompleted: (data) => {
+                
+                },
+                onError: (apolloError) => {
+                    toast.error('Unable to create list')
+                    console.log(apolloError)
+                }
+            })
             
-        // } catch (error) {
-        //     toast.error('Unable to create board', { id: 'createBoard' })
-        // }
+        } catch (error) {
+            toast.error('Unable to create board')
+        }
 
         setNewList({showInput: false, name: ""})
     }
@@ -95,9 +119,7 @@ const Board = () => {
                         </button>
                     </header>
                     <body className="flex space-x-3 px-3">
-                        <List />
-                        <List />
-                        <List />
+                        {boardData.lists.map((list: any) => <List key={list.id} listData={list} cards={boardData.cards.filter((card:any) => card.list_id == list.id)}/>)}
 
                         {newList.showInput ? 
                             <div className="w-60 h-min flex flex-col space-y-2 p-2 space-x-1 rounded-md bg-[#ebecf0]">
@@ -119,10 +141,6 @@ const Board = () => {
                                 <p>Add a new list</p>
                             </button>
                         }
-                        
-
-                        
-                        
                     </body>
                 </div>
             : null}

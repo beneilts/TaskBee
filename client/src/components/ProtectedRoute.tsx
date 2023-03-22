@@ -3,23 +3,23 @@ import { useAuthenticationStatus } from '@nhost/react'
 import { Navigate, useLocation } from 'react-router-dom'
 import Spinner from './Spinner'
 
-const ProtectedRoute = ({ children } : any) => {
-  const { isAuthenticated, isLoading } = useAuthenticationStatus()
-  const location = useLocation()
+const ProtectedRoute = ({ children }: any) => {
+    const { isAuthenticated, isLoading } = useAuthenticationStatus()
+    const location = useLocation()
 
-  if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <Spinner />
-      </div>
-    )
-  }
+    if (isLoading) {
+        return (
+            <div className={styles.container}>
+                <Spinner />
+            </div>
+        )
+    }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/sign-in" state={{ from: location }} replace />
-  }
+    if (!isAuthenticated) {
+        return <Navigate to="/sign-in" state={{ from: location }} replace />
+    }
 
-  return children
+    return children
 }
 
 export default ProtectedRoute
