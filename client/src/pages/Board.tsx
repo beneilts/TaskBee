@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from 'react-hot-toast'
 import {StarIcon} from '@heroicons/react/24/outline';
 import {StarIcon as StarIconSolid, PlusIcon, XMarkIcon} from '@heroicons/react/24/solid';
@@ -22,6 +22,7 @@ const GET_BOARDS = gql`
     lists(where: {board_id: {_eq: $board_id}}, order_by: {position: asc_nulls_last}) {
         created_at
         id
+        board_id
         name
         position
         updated_at
@@ -63,7 +64,7 @@ const Board = () => {
     const [mutateList, ] = useMutation(CREATE_LIST)
     const { boardId } = useParams()
     
-    const { loading, error, data } = useQuery(GET_BOARDS, {
+    const { loading, error, data, refetch} = useQuery(GET_BOARDS, {
         variables: { board_id: boardId },
         onCompleted: (data) => {
             if (data.boards[0])
@@ -89,7 +90,7 @@ const Board = () => {
                 },
 
                 onCompleted: (data) => {
-                
+                    refetch()
                 },
                 onError: (apolloError) => {
                     toast.error('Unable to create list')
@@ -103,6 +104,12 @@ const Board = () => {
 
         setNewList({showInput: false, name: ""})
     }
+
+    useEffect(() => {  
+        if (newList.showInput) {
+            document.getElementById("new_list_input")?.focus()
+        }
+    }, [newList])
 
     return (
         <>
@@ -119,11 +126,20 @@ const Board = () => {
                         </button>
                     </header>
                     <body className="flex space-x-3 px-3">
-                        {boardData.lists.map((list: any) => <List key={list.id} listData={list} cards={boardData.cards.filter((card:any) => card.list_id == list.id)}/>)}
+                        {boardData.lists.map((list: any) => <List 
+                            key={list.id} 
+                            listData={list} 
+                            cards={boardData.cards.filter((card:any) => card.list_id == list.id)}
+                            refetchBoard = {refetch}
+                        />)}
 
                         {newList.showInput ? 
-                            <div className="w-60 h-min flex flex-col space-y-2 p-2 space-x-1 rounded-md bg-[#ebecf0]">
-                                <input className="rounded_sm border-2 border-orange-500 text-[#172b4d] px-2 py-1"
+                            <div className="w-60 h-min flex flex-col space-y-2 p-2 space-x-1 rounded-md bg-[#ebecf0]"
+                                /* onBlur={() => setNewList({...newList, showInput: false})} */
+                            >
+                                <input className="rounded_sm border-2 outline-none border-orange-500 text-[#172b4d] px-2 py-1"
+                                    id = "new_list_input"
+                                    placeholder="Enter list title..."
                                     value={newList.name}
                                     onChange={(e) => setNewList({...newList, name: e.target.value})}
                                 ></input>
